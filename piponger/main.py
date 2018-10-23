@@ -46,7 +46,7 @@ logger.addHandler(syslog)
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config.from_object(__name__)
-app.config.from_pyfile('config_default.cfg')
+app.config.from_pyfile('config.cfg')
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 app.config['CELERYBEAT_SCHEDULE'] = {
