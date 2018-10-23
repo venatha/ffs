@@ -107,6 +107,18 @@ def get_local_ip():
            for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]])
             + ["no IP found"])[0]
 
+
+def register_views():
+    from views import common_views
+    if pipong_is_master():
+        from views import master_views
+    elif pipong_is_pinger():
+        from views import pinger_views
+    elif pipong_is_ponger():
+        from views import ponger_views
+    return
+
+
 from tasks.common_tasks import report_to_master
 from tasks.master_tasks import remove_old_nodes
 
@@ -114,3 +126,5 @@ from tasks.master_tasks import remove_old_nodes
 report_to_master.apply_async(
     args=[app.config['API_PORT'], app.config['API_PROTOCOL']], kwargs={})
 remove_old_nodes.apply_async(args=[], kwargs={})
+
+register_views()
