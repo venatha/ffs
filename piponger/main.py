@@ -14,10 +14,6 @@ import socket
 import celery
 from celery.schedules import crontab
 
-from tasks.common_tasks import report_to_master
-from tasks.master_tasks import remove_old_nodes
-
-
 # define celery object and parameters
 def make_celery(flask_app):
     celery_obj = celery.Celery(
@@ -103,7 +99,6 @@ def get_local_free_port():
     s.close()
     return port
 
-
 def get_local_ip():
     return (([
         ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
@@ -111,6 +106,9 @@ def get_local_ip():
     ] or [[(s.connect(("8.8.8.8", 53)), s.getsockname()[0], s.close())
            for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]])
             + ["no IP found"])[0]
+
+from tasks.common_tasks import report_to_master
+from tasks.master_tasks import remove_old_nodes
 
 
 report_to_master.apply_async(
